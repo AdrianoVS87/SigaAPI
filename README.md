@@ -1,11 +1,15 @@
-SigaAPI
+# Sobre o projeto
+
+## SigaAPI
 
 Desafio técnico para vaga de Programador Java da HealthChess.
+API RESTful para gestão de dados dos pacientes.
 
 ## Criado com
 
 - Linguagens: Java
 - Frameworks: Spring Boot
+- Tecnologias: Flyway, Hibernate, JUnit, PostgreSQL, Lombok
 
 ## Como começar
 
