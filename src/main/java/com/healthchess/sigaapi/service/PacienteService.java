@@ -40,6 +40,7 @@ public class PacienteService {
         Paciente pacienteAtualizar = repository.findById(paciente.getId()).get();
         pacienteAtualizar.setNome(paciente.getNome());
         pacienteAtualizar.setDataNascimento(paciente.getDataNascimento());
+        pacienteAtualizar.setCpf(paciente.getCpf());
         return repository.save(pacienteAtualizar);
     }
 

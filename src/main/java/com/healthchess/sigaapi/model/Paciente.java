@@ -30,11 +30,15 @@ public class Paciente {
     //Campo data de nascimento da tabela paciente
     private Date dataNascimento;
 
+    //Campo cpf da tabela paciente
+    private String cpf;
+
     //Método construtor de paciente
-    public Paciente(Integer id, String nome, Date dataNascimento) {
+    public Paciente(Integer id, String nome, Date dataNascimento, String cpf) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
+        this.cpf = cpf;
     }
 
     //Método construtor vazio de paciente
@@ -48,6 +52,7 @@ public class Paciente {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", dataNascimento=" + dataNascimento +
+                ", cpf='" + cpf + '\'' +
                 '}';
     }
 }

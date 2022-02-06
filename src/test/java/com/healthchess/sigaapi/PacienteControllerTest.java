@@ -30,7 +30,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComDadosCorretos_RetornarStatusCode200() throws Exception {
-        Paciente paciente = new Paciente(null,"Adriano Santos",new Date());
+        Paciente paciente = new Paciente(null,"Adriano Santos",new Date(),"019.115.630-25");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -55,7 +55,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeAcimaDe60Digitos_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",new Date());
+        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",new Date(),"019.115.630-25");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -70,7 +70,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeNulo_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,null ,new Date());
+        Paciente paciente = new Paciente(null,null ,new Date(),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -85,7 +85,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeVazio_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"" ,new Date());
+        Paciente paciente = new Paciente(null,"" ,new Date(),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -119,7 +119,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void atualizarUsuarioComDadosCorretos_RetornarStatusCode200() throws Exception {
-        Paciente paciente = new Paciente(1,"Joao Santos",new Date());
+        Paciente paciente = new Paciente(1,"Joao Santos",new Date(),"01911563025");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -134,7 +134,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void atualizarUsuarioComDadosIncorretos_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(1,"",new Date());
+        Paciente paciente = new Paciente(1,"",new Date(),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
