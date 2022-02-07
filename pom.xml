@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.healthchess</groupId>
-	<artifactId>SigaAPI</artifactId>
+	<artifactId>sigaapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SigaAPI</name>
-	<description>SigaAPI</description>
+	<name>sigaapi</name>
+	<description>sigaapi</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
