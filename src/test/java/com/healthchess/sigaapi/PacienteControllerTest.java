@@ -1,10 +1,8 @@
 package com.healthchess.sigaapi;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthchess.sigaapi.controller.PacienteController;
 import com.healthchess.sigaapi.model.Paciente;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
