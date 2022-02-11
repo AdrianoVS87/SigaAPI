@@ -5,6 +5,7 @@ import com.healthchess.sigaapi.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -52,7 +53,7 @@ public class PacienteController {
 
     //Atualiza os dados de paciente
     @PutMapping
-    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente paciente) {
+    public ResponseEntity<Paciente> atualizar(@Valid @RequestBody Paciente paciente) {
         ResponseEntity<Paciente> response = null;
 
         if (paciente.getId() != null && service.buscar(paciente.getId()).isPresent()) {

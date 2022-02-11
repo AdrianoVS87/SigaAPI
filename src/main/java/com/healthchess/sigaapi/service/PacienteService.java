@@ -5,6 +5,7 @@ import com.healthchess.sigaapi.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,12 +33,12 @@ public class PacienteService {
     }
 
     //Método para criar um novo paciente.
-    public Paciente salvar(Paciente paciente){
+    public Paciente salvar(@Valid Paciente paciente){
         return repository.save(paciente);
     }
 
     //Método para atualizar dados do paciente
-    public Paciente atualizar(Paciente paciente){
+    public Paciente atualizar(@Valid Paciente paciente){
         Paciente pacienteAtualizar = repository.findById(paciente.getId()).get();
         pacienteAtualizar.setNome(paciente.getNome());
         pacienteAtualizar.setDataNascimento(paciente.getDataNascimento());
