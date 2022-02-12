@@ -13,7 +13,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class PacienteControllerTest extends SigaApiApplicationTests{
     private MockMvc mockMvc;
@@ -28,7 +29,8 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComDadosCorretos_RetornarStatusCode200() throws Exception {
-        Paciente paciente = new Paciente(null,"Adriano Santos",new Date(),"019.115.630-25");
+        Paciente paciente;
+        paciente = new Paciente(null, "Adriano Santos", LocalDate.of(1987,04,13), "019.115.630-25");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -53,7 +55,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeAcimaDe60Digitos_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",new Date(),"019.115.630-25");
+        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",LocalDate.of(1987,04,13),"019.115.630-25");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -68,7 +70,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeNulo_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,null ,new Date(),"");
+        Paciente paciente = new Paciente(null,null ,LocalDate.of(1987,04,13),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -83,7 +85,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeVazio_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"" ,new Date(),"");
+        Paciente paciente = new Paciente(null,"" ,LocalDate.of(1987,04,13),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -117,7 +119,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void atualizarUsuarioComDadosCorretos_RetornarStatusCode200() throws Exception {
-        Paciente paciente = new Paciente(1,"Joao Santos",new Date(),"01911563025");
+        Paciente paciente = new Paciente(1,"Joao Santos",LocalDate.of(1987,04,13),"01911563025");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -132,7 +134,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void atualizarUsuarioComDadosIncorretos_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(1,"",new Date(),"");
+        Paciente paciente = new Paciente(1,"",LocalDate.of(1987,04,13),"");
 
         ObjectMapper mapper = new ObjectMapper();
 

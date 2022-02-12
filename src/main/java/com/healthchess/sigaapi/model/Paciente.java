@@ -8,7 +8,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 //Modelo tabela paciente
 @Entity
@@ -28,13 +29,13 @@ public class Paciente {
     private String nome;
 
     //Campo data de nascimento da tabela paciente
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     //Campo cpf da tabela paciente
     private String cpf;
 
     //Método construtor de paciente
-    public Paciente(Integer id, String nome, Date dataNascimento, String cpf) {
+    public Paciente(Integer id, String nome, LocalDate dataNascimento, String cpf) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
