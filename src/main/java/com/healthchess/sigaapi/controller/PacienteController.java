@@ -1,11 +1,10 @@
 package com.healthchess.sigaapi.controller;
 
 import com.healthchess.sigaapi.model.Paciente;
-import com.healthchess.sigaapi.service.PacienteService;
+import com.healthchess.sigaapi.service.impl.PacienteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,7 +17,7 @@ public class PacienteController {
 
     //Injeção de dependência
     @Autowired
-    private PacienteService service;
+    private PacienteServiceImpl service;
 
     //Busca e retorna todos os pacientes.
     @GetMapping
