@@ -27,8 +27,14 @@ public class PacienteController {
     //Busca o paciente por id
     @GetMapping("/{id}")
     public ResponseEntity<Paciente> buscarPorId(@PathVariable Integer id){
-        Paciente paciente = service.buscar(id).orElse(null);
-        return ResponseEntity.ok(paciente);
+        ResponseEntity<Paciente> response = null;
+        if(service.buscar(id).isPresent()) {
+            Paciente paciente = service.buscar(id).orElse(null);
+            response = ResponseEntity.ok(paciente);
+        } else {
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return response;
     }
 
     //Deleta o paciente por id
