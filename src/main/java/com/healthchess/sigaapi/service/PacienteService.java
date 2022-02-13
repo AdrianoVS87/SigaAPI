@@ -12,6 +12,6 @@ public interface PacienteService {
     public Optional<Paciente> buscar(Integer id);
     public void excluir(Integer id);
     public Paciente salvar(@Valid Paciente paciente);
-    public Paciente atualizar(@Valid Paciente paciente);
+    public Paciente atualizar(Integer id, @Valid Paciente paciente);
 
 }
