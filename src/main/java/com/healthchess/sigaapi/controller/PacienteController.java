@@ -1,7 +1,9 @@
 package com.healthchess.sigaapi.controller;
 
+import com.healthchess.sigaapi.dtos.PacienteDTO;
 import com.healthchess.sigaapi.model.Paciente;
 import com.healthchess.sigaapi.service.impl.PacienteServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,27 +11,35 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //Controller tabela paciente
 @RestController
 @RequestMapping("/paciente")
 public class PacienteController {
 
-    //Injeção de dependência
+    //Injeção de dependências
     @Autowired
     private PacienteServiceImpl service;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     //Busca e retorna todos os pacientes.
     @GetMapping
-    public ResponseEntity<List<Paciente>> buscarTodos(){ return ResponseEntity.ok(service.bucarTodos());}
+    public ResponseEntity<List<PacienteDTO>> buscarTodos(){
+        return ResponseEntity.ok(service.bucarTodos()
+            .stream().map(this::paraPacienteDTO)
+            .collect(Collectors.toList()));
+    }
 
     //Busca o paciente por id
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscarPorId(@PathVariable Integer id){
-        ResponseEntity<Paciente> response = null;
+    public ResponseEntity<PacienteDTO> buscarPorId(@PathVariable Integer id){
+        ResponseEntity<PacienteDTO> response = null;
         if(service.buscar(id).isPresent()) {
             Paciente paciente = service.buscar(id).orElse(null);
-            response = ResponseEntity.ok(paciente);
+            response = ResponseEntity.ok(paraPacienteDTO(paciente));
         } else {
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -52,22 +62,33 @@ public class PacienteController {
 
     //Cria um novo paciente
     @PostMapping
-    public ResponseEntity<Paciente> registrar(@Valid @RequestBody Paciente paciente){
-        return new ResponseEntity<Paciente>(service.salvar(paciente), HttpStatus.CREATED);
+    public ResponseEntity<PacienteDTO> registrar(@Valid @RequestBody PacienteDTO paciente){
+        service.salvar(paraPaciente(paciente));
+        return new ResponseEntity<PacienteDTO>(paciente, HttpStatus.CREATED);
     }
 
     //Atualiza os dados de paciente
     @PutMapping
-    public ResponseEntity<Paciente> atualizar(@Valid @RequestBody Paciente paciente) {
-        ResponseEntity<Paciente> response = null;
+    public ResponseEntity<PacienteDTO> atualizar(@Valid @RequestBody PacienteDTO paciente) {
+        ResponseEntity<PacienteDTO> response = null;
 
         if (paciente.getId() != null && service.buscar(paciente.getId()).isPresent()) {
-            response = new ResponseEntity<Paciente>(service.atualizar(paciente), HttpStatus.CREATED);
+            service.atualizar(paraPaciente(paciente));
+            response = new ResponseEntity<PacienteDTO>(paciente, HttpStatus.CREATED);
         }
         else {
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return response;
     }
+
+    private PacienteDTO paraPacienteDTO(Paciente paciente){
+        return modelMapper.map(paciente, PacienteDTO.class);
+    }
+
+    private Paciente paraPaciente(PacienteDTO paciente){
+        return modelMapper.map(paciente, Paciente.class);
+    }
+
 
 }
