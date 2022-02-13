@@ -24,9 +24,9 @@ public class Paciente {
     private Integer id;
 
     //Campo nome da tabela paciente, não aceitando valores nulos, vazios ou com mais de 60 caractéres
-    @Size(max=60)
-    @NotEmpty
-    @NotNull
+    @Size(min = 1, max=60)
+    @NotEmpty(message = "O campo nome nao pode estar vazio.")
+    @NotNull(message = "O campo nome nao pode ser nulo.")
     private String nome;
 
     //Campo data de nascimento da tabela paciente
