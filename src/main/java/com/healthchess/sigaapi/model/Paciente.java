@@ -2,6 +2,7 @@ package com.healthchess.sigaapi.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -32,6 +33,7 @@ public class Paciente {
     private LocalDate dataNascimento;
 
     //Campo cpf da tabela paciente
+    @CPF
     private String cpf;
 
     //Método construtor de paciente
