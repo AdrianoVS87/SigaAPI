@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 @Getter @Setter
 public class PacienteDTO {
     private Integer id;
     private String nome;
-    private LocalDate dataNascimento;
+    private Date dataNascimento;
     @CPF
     private String cpf;
 
