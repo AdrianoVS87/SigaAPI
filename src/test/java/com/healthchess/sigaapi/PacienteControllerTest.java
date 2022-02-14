@@ -4,11 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthchess.sigaapi.controller.PacienteController;
 import com.healthchess.sigaapi.model.Paciente;
 
-
-import com.healthchess.sigaapi.service.exceptions.DataIntegrityViolationException;
-import com.healthchess.sigaapi.service.exceptions.ObjectNotFoundException;
 import org.junit.Before;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,12 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.util.NestedServletException;
 
-
-import java.sql.Date;
-
+import java.time.LocalDate;
 
 
 public class PacienteControllerTest extends SigaApiApplicationTests{
@@ -38,7 +31,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
     @Test
     public void criarUsuarioComDadosCorretos_RetornarStatusCode201() throws Exception {
         Paciente paciente;
-        paciente = new Paciente(null, "Adriano Santos", new Date(1987,04,13), "289.363.100-20");
+        paciente = new Paciente(null, "Adriano Santos", LocalDate.of(2011,1,1), "289.363.100-20");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -63,7 +56,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test(expected = NestedServletException.class)
     public void criarUsuarioComNomeAcimaDe60Digitos_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",new Date(1987,04,13),"019.115.630-25");
+        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",LocalDate.now(),"019.115.630-25");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -78,7 +71,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeNulo_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,null , new Date(1987,04,13),"");
+        Paciente paciente = new Paciente(null,null , LocalDate.now(),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -93,7 +86,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeVazio_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"" ,new Date(1987,04,13),"");
+        Paciente paciente = new Paciente(null,"" ,LocalDate.now(),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -127,7 +120,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void atualizarUsuarioComDadosCorretos_RetornarStatusCode200() throws Exception {
-        Paciente paciente = new Paciente(1,"Joao Santos",new Date(1987,04,13),"141.011.810-04");
+        Paciente paciente = new Paciente(1,"Joao Santos",LocalDate.parse("2008-04-13"),"011.732.520-10");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -142,7 +135,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void atualizarUsuarioComDadosIncorretos_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(1,"",new Date(1987,04,13),"");
+        Paciente paciente = new Paciente(1,"",LocalDate.of(2011,1,1),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -153,6 +146,12 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
                         .content(json)
                 )
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void deletarUsuarioPorId_RetornarStatusCode204() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/paciente/2"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
 }

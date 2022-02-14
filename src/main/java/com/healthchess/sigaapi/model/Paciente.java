@@ -1,5 +1,7 @@
 package com.healthchess.sigaapi.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
@@ -8,8 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import java.sql.Date;
 import java.time.LocalDate;
 
 
@@ -31,14 +31,15 @@ public class Paciente {
     private String nome;
 
     //Campo data de nascimento da tabela paciente
-    private Date dataNascimento;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private LocalDate dataNascimento;
 
     //Campo cpf da tabela paciente
     @CPF
     private String cpf;
 
     //Método construtor de paciente
-    public Paciente(Integer id, String nome, Date dataNascimento, String cpf) {
+    public Paciente(Integer id, String nome, LocalDate dataNascimento, String cpf) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
