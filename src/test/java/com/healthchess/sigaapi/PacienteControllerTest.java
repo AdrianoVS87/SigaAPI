@@ -54,9 +54,24 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @Test(expected = AssertionError.class)
+    public void criarUsuarioComCPFDuplicado_RetornarStatusCode400() throws Exception {
+        Paciente paciente = new Paciente(null,"Adriano Silva",LocalDate.of(1984,1,1),"019.115.630-25");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String json = mapper.writeValueAsString(paciente);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/paciente")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
     @Test(expected = NestedServletException.class)
     public void criarUsuarioComNomeAcimaDe60Digitos_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",LocalDate.now(),"019.115.630-25");
+        Paciente paciente = new Paciente(null,"1234567890123456789012345678901234567890123456789012345678901234567890",LocalDate.of(2011,1,1),"019.115.630-25");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -71,7 +86,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeNulo_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,null , LocalDate.now(),"");
+        Paciente paciente = new Paciente(null,null , LocalDate.of(2011,1,1),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -86,7 +101,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void criarUsuarioComNomeVazio_RetornarStatusCode400() throws Exception {
-        Paciente paciente = new Paciente(null,"" ,LocalDate.now(),"");
+        Paciente paciente = new Paciente(null,"" ,LocalDate.of(2011,1,1),"");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -120,7 +135,7 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
 
     @Test
     public void atualizarUsuarioComDadosCorretos_RetornarStatusCode200() throws Exception {
-        Paciente paciente = new Paciente(1,"Joao Santos",LocalDate.parse("2008-04-13"),"011.732.520-10");
+        Paciente paciente = new Paciente(1,"Joao Santos",LocalDate.of(2011,1,1),"011.732.520-10");
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -148,10 +163,31 @@ public class PacienteControllerTest extends SigaApiApplicationTests{
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @Test(expected = NestedServletException.class)
+    public void atualizarUsuarioComCPFDuplicado_RetornarStatusCode400() throws Exception {
+        Paciente paciente = new Paciente(2,"Joao Silva",LocalDate.of(2011,1,1),"019.115.630-25");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String json = mapper.writeValueAsString(paciente);
+
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/paciente/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
     @Test
     public void deletarUsuarioPorId_RetornarStatusCode204() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/paciente/2"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test(expected = NestedServletException.class)
+    public void deletarUsuarioPorIdInexistente_RetornarStatusCode404() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/paciente/20"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 }

@@ -1,10 +1,8 @@
 package com.healthchess.sigaapi.controller;
 
 import com.healthchess.sigaapi.dtos.PacienteDTO;
-import com.healthchess.sigaapi.model.Paciente;
 import com.healthchess.sigaapi.service.impl.PacienteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

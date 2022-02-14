@@ -26,6 +26,7 @@ public class PacienteServiceImpl implements PacienteService {
     @Autowired
     private PacienteRepository repository;
 
+    //Injeção de dependência ModelMapper
     @Autowired
     private ModelMapper modelMapper;
 
@@ -76,6 +77,7 @@ public class PacienteServiceImpl implements PacienteService {
         return paraPacienteDTO(pacienteAtualizar);
     }
 
+    //Método que realiza busca por CPF, retorna o objeto PacienteDTO do respectivo CPF
     private PacienteDTO buscarPorCPF(PacienteDTO paciente){
         Paciente obj = repository.findByCPF(paciente.getCpf());
 
@@ -85,10 +87,12 @@ public class PacienteServiceImpl implements PacienteService {
         return null;
     }
 
+    //Método utilizando ModelMapper Objeto Paciente para PacienteDTO
     private PacienteDTO paraPacienteDTO(Paciente paciente){
         return modelMapper.map(paciente, PacienteDTO.class);
     }
 
+    //Método utilizando ModelMapper Objeto PacienteDTO para Paciente
     private Paciente paraPaciente(PacienteDTO paciente){
         return modelMapper.map(paciente, Paciente.class);
     }

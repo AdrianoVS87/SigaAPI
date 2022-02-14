@@ -1,11 +1,9 @@
 package com.healthchess.sigaapi.service;
 
 import com.healthchess.sigaapi.dtos.PacienteDTO;
-import com.healthchess.sigaapi.model.Paciente;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 public interface PacienteService {
 
