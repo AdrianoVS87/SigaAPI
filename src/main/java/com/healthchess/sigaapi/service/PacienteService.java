@@ -1,5 +1,6 @@
 package com.healthchess.sigaapi.service;
 
+import com.healthchess.sigaapi.dtos.PacienteDTO;
 import com.healthchess.sigaapi.model.Paciente;
 
 import javax.validation.Valid;
@@ -8,10 +9,10 @@ import java.util.Optional;
 
 public interface PacienteService {
 
-    public List<Paciente> bucarTodos();
-    public Optional<Paciente> buscar(Integer id);
+    public List<PacienteDTO> bucarTodos();
+    public PacienteDTO buscar(Integer id);
     public void excluir(Integer id);
-    public Paciente salvar(@Valid Paciente paciente);
-    public Paciente atualizar(Integer id, @Valid Paciente paciente);
+    public PacienteDTO salvar(@Valid PacienteDTO paciente);
+    public PacienteDTO atualizar(Integer id, @Valid PacienteDTO paciente);
 
 }

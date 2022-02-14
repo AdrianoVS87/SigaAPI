@@ -1,5 +1,6 @@
 package com.healthchess.sigaapi.service.impl;
 
+import com.healthchess.sigaapi.dtos.PacienteDTO;
 import com.healthchess.sigaapi.model.Paciente;
 import com.healthchess.sigaapi.repository.PacienteRepository;
 import com.healthchess.sigaapi.service.PacienteService;
@@ -8,12 +9,14 @@ import com.healthchess.sigaapi.service.exceptions.DataIntegrityViolationExceptio
 
 import com.healthchess.sigaapi.service.exceptions.NoSuchElementException;
 import com.healthchess.sigaapi.service.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 //Service tabela paciente
 @Service
@@ -23,16 +26,23 @@ public class PacienteServiceImpl implements PacienteService {
     @Autowired
     private PacienteRepository repository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     //Método para buscar todos os pacientes
-    public List<Paciente> bucarTodos(){
-        return repository.findAll();
+    public List<PacienteDTO> bucarTodos(){
+        List<Paciente> lista = repository.findAll();
+        List<PacienteDTO> listaDTO = lista.stream().map(this::paraPacienteDTO)
+                .collect(Collectors.toList());
+        return listaDTO;
     }
 
     //Método para buscar paciente por id
-    public Optional<Paciente> buscar(Integer id){
+    public PacienteDTO buscar(Integer id){
         Optional<Paciente> obj = repository.findById(id);
-        return Optional.ofNullable(obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Paciente não encontrado! Id: " + id + " Tipo: " + Paciente.class.getName())));
+        Optional<PacienteDTO> objDTO = obj.map(this::paraPacienteDTO);
+        return objDTO.orElseThrow(() -> new ObjectNotFoundException(
+                "Paciente não encontrado! Id: " + id + " Tipo: " + Paciente.class.getName()));
     }
 
     //Método para excluir paciente por id
@@ -42,36 +52,45 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     //Método para criar um novo paciente.
-    public Paciente salvar(@Valid Paciente paciente){
+    public PacienteDTO salvar(@Valid PacienteDTO paciente){
         if(buscarPorCPF(paciente) != null){
             throw new DataIntegrityViolationException("CPF já cadastrado na base de dados!");
         }
-        return repository.save(new Paciente(null, paciente.getNome(), paciente.getDataNascimento(),paciente.getCpf()));
+        repository.save(paraPaciente(paciente));
+        return paciente;
     }
 
     //Método para atualizar dados do paciente
-    public Paciente atualizar(Integer id, @Valid Paciente paciente){
-        Optional<Paciente> pacienteAtualizar = repository.findById(id);
+    public PacienteDTO atualizar(Integer id, @Valid PacienteDTO paciente){
         if(buscarPorCPF(paciente) != null && buscarPorCPF(paciente).getId() != id){
             throw new DataIntegrityViolationException("CPF já cadastrado na base de dados!");
         }
-        if(!(buscar(id).isPresent())){
+        if(!repository.findById(id).isPresent()){
             throw new NoSuchElementException("Paciente não encontrado! Id: " + id +" Tipo: " + Paciente.class.getName());
         }
-
-        pacienteAtualizar.get().setNome(paciente.getNome());
-        pacienteAtualizar.get().setCpf(paciente.getCpf());
-        pacienteAtualizar.get().setDataNascimento(paciente.getDataNascimento());
-
-        return repository.save(pacienteAtualizar.get());
+        Paciente pacienteAtualizar = repository.findById(id).get();
+        pacienteAtualizar.setNome(paciente.getNome());
+        pacienteAtualizar.setCpf(paciente.getCpf());
+        pacienteAtualizar.setDataNascimento(paciente.getDataNascimento());
+        repository.save(pacienteAtualizar);
+        return paraPacienteDTO(pacienteAtualizar);
     }
 
-    private Paciente buscarPorCPF(Paciente paciente){
+    private PacienteDTO buscarPorCPF(PacienteDTO paciente){
         Paciente obj = repository.findByCPF(paciente.getCpf());
+
         if(obj != null){
-            return obj;
+            return paraPacienteDTO(obj);
         }
         return null;
+    }
+
+    private PacienteDTO paraPacienteDTO(Paciente paciente){
+        return modelMapper.map(paciente, PacienteDTO.class);
+    }
+
+    private Paciente paraPaciente(PacienteDTO paciente){
+        return modelMapper.map(paciente, Paciente.class);
     }
 
 }
