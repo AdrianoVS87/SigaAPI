@@ -57,8 +57,8 @@ public class PacienteServiceImpl implements PacienteService {
         if(buscarPorCPF(paciente) != null){
             throw new DataIntegrityViolationException("CPF já cadastrado na base de dados!");
         }
-        repository.save(paraPaciente(paciente));
-        return paciente;
+
+        return paraPacienteDTO(repository.save(paraPaciente(paciente)));
     }
 
     //Método para atualizar dados do paciente

@@ -48,8 +48,7 @@ public class PacienteController {
     @PostMapping
     @Operation(summary = "Criar um novo paciente", description = "Esta operação cria um novo paciente com os dados informados.")
     public ResponseEntity<PacienteDTO> registrar(@Valid @RequestBody PacienteDTO paciente){
-        service.salvar(paciente);
-        PacienteDTO novoObj = service.buscar(service.bucarTodos().size());
+        PacienteDTO novoObj = service.salvar(paciente);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(novoObj.getId()).toUri();
